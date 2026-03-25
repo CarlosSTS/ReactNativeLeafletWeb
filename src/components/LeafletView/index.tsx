@@ -1,0 +1,244 @@
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { WebView, WebViewProps } from 'react-native-webview';
+import {
+  MapMarker,
+  WebviewLeafletMessage,
+  MapMessage,
+  WebViewLeafletEvents,
+  MapLayer,
+  MapShape,
+  OwnPositionMarker,
+  OWN_POSTION_MARKER_ID,
+} from '~/@types/leaflet';
+
+import { Platform, StyleSheet } from 'react-native';
+import { WebViewMessageEvent } from 'react-native-webview/lib/WebViewTypes';
+import { LoadingIndicator } from '../LoadingIndicator';
+import { LatLngExpression } from '~/@types/map';
+
+const LEAFLET_HTML_SOURCE = Platform.select({
+  ios: require('../../../android/src/main/assets/leaflet.html'),
+  android: { uri: 'file:///android_asset/leaflet.html' },
+});
+
+const DEFAULT_MAP_LAYERS: MapLayer[] = [
+  {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    baseLayerIsChecked: true,
+    baseLayerName: 'OpenStreetMap.Mapnik',
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  },
+];
+
+const DEFAULT_ZOOM = 15;
+
+interface LeafletViewProps extends Omit<WebViewProps, 'onMessage'> {
+  onMessageReceived?: (message: WebviewLeafletMessage) => void;
+  mapLayers?: MapLayer[];
+  mapMarkers?: MapMarker[];
+  mapShapes?: MapShape[];
+  mapCenterPosition?: LatLngExpression;
+  ownPositionMarker?: OwnPositionMarker;
+  zoom?: number;
+  doDebug?: boolean;
+  zoomControl?: boolean;
+  attributionControl?: boolean;
+  useMarkerClustering?: boolean;
+}
+
+const LeafletView: React.FC<LeafletViewProps> = ({
+  renderLoading = () => <LoadingIndicator />,
+  onMessageReceived,
+  mapLayers = DEFAULT_MAP_LAYERS,
+  mapMarkers,
+  mapShapes,
+  mapCenterPosition,
+  ownPositionMarker,
+  zoom = DEFAULT_ZOOM,
+  doDebug = __DEV__,
+  source = LEAFLET_HTML_SOURCE,
+  zoomControl = true,
+  attributionControl = true,
+  useMarkerClustering = true,
+  ...rest
+}) => {
+  const webViewRef = useRef<WebView>(null);
+  const [initialized, setInitialized] = useState(false);
+
+  const logMessage = useCallback(
+    (message: string) => {
+      if (doDebug) {
+        console.log(message);
+      }
+    },
+    [doDebug],
+  );
+
+  const sendMessage = useCallback(
+    (payload: MapMessage) => {
+      logMessage(`sending: ${JSON.stringify(payload)}`);
+
+      webViewRef.current?.injectJavaScript(
+        `window.postMessage(${JSON.stringify(payload)}, '*');`,
+      );
+    },
+    [logMessage],
+  );
+
+  const sendInitialMessage = useCallback(() => {
+    let startupMessage: MapMessage = {};
+
+    if (mapLayers) {
+      startupMessage.mapLayers = mapLayers;
+    }
+    if (mapMarkers) {
+      startupMessage.mapMarkers = mapMarkers;
+    }
+    if (mapCenterPosition) {
+      startupMessage.mapCenterPosition = mapCenterPosition;
+    }
+    if (mapShapes) {
+      startupMessage.mapShapes = mapShapes;
+    }
+    if (ownPositionMarker) {
+      startupMessage.ownPositionMarker = {
+        ...ownPositionMarker,
+        id: OWN_POSTION_MARKER_ID,
+      };
+    }
+    startupMessage.zoom = zoom;
+    startupMessage.useMarkerClustering = useMarkerClustering;
+    startupMessage.zoomControl = zoomControl;
+    startupMessage.attributionControl = attributionControl;
+
+    sendMessage(startupMessage);
+    setInitialized(true);
+    logMessage('sending initial message');
+  }, [
+    logMessage,
+    mapCenterPosition,
+    mapLayers,
+    mapMarkers,
+    mapShapes,
+    ownPositionMarker,
+    sendMessage,
+    zoom,
+    attributionControl,
+    zoomControl,
+    useMarkerClustering,
+  ]);
+
+  const handleMessage = useCallback(
+    (event: WebViewMessageEvent) => {
+      const data = event?.nativeEvent?.data;
+      if (!data) {
+        return;
+      }
+
+      const message: WebviewLeafletMessage = JSON.parse(data);
+      logMessage(`received: ${JSON.stringify(message)}`);
+
+      if (message.msg === WebViewLeafletEvents.MAP_READY) {
+        sendInitialMessage();
+      }
+      if (message.event === WebViewLeafletEvents.ON_MOVE_END) {
+        logMessage(
+          `moved to: ${JSON.stringify(message.payload?.mapCenterPosition)}`,
+        );
+      }
+
+      onMessageReceived?.(message);
+    },
+    [logMessage, onMessageReceived, sendInitialMessage],
+  );
+
+  //Handle mapLayers update
+  useEffect(() => {
+    if (!initialized) {
+      return;
+    }
+    sendMessage({ mapLayers });
+  }, [initialized, mapLayers, sendMessage]);
+
+  //Handle mapMarkers update
+  useEffect(() => {
+    if (!initialized) {
+      return;
+    }
+    sendMessage({
+      mapMarkers,
+      useMarkerClustering,
+      zoomControl,
+      attributionControl,
+    });
+  }, [
+    initialized,
+    mapMarkers,
+    sendMessage,
+    useMarkerClustering,
+    zoomControl,
+    attributionControl,
+  ]);
+
+  //Handle mapShapes update
+  useEffect(() => {
+    if (!initialized) {
+      return;
+    }
+    sendMessage({ mapShapes });
+  }, [initialized, mapShapes, sendMessage]);
+
+  //Handle ownPositionMarker update
+  useEffect(() => {
+    if (!initialized || !ownPositionMarker) {
+      return;
+    }
+    sendMessage({
+      ownPositionMarker: { ...ownPositionMarker, id: OWN_POSTION_MARKER_ID },
+    });
+  }, [initialized, ownPositionMarker, sendMessage]);
+
+  //Handle mapCenterPosition update
+  useEffect(() => {
+    if (!initialized) {
+      return;
+    }
+    sendMessage({ mapCenterPosition });
+  }, [initialized, mapCenterPosition, sendMessage]);
+
+  //Handle zoom update
+  useEffect(() => {
+    if (!initialized) {
+      return;
+    }
+    sendMessage({ zoom });
+  }, [initialized, zoom, sendMessage]);
+
+  return (
+    <WebView
+      {...rest}
+      containerStyle={styles.container}
+      ref={webViewRef}
+      javaScriptEnabled={true}
+      onMessage={handleMessage}
+      domStorageEnabled={true}
+      startInLoadingState={true}
+      originWhitelist={['*']}
+      renderLoading={renderLoading}
+      source={source}
+      allowFileAccess={true}
+      allowUniversalAccessFromFileURLs={true}
+      allowFileAccessFromFileURLs={true}
+    />
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    ...StyleSheet.absoluteFill,
+  },
+});
+
+export { LeafletView };
