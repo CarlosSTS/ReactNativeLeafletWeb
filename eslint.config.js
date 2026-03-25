@@ -39,6 +39,10 @@ export default [
         FormData: 'readonly',
         Blob: 'readonly',
         require: 'readonly',
+        HTMLIFrameElement: 'readonly',
+        document: 'readonly',
+        window: 'readonly',
+        MessageEvent: 'readonly',
       },
     },
     plugins: {
