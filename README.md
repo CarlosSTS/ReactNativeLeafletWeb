@@ -76,10 +76,26 @@ Usage examples for each platform are available in the [`example/`](example/) fol
 
 ## Supported Platforms
 
-- [x] Android
-- [x] iOS
-- [x] Web
-- [x] Expo
+| Platform         | Support | Min Version                                           |
+| ---------------- | ------- | ----------------------------------------------------- |
+| Android          | ✅      | API 24 (Android 7.0)                                  |
+| iOS              | ✅      | iOS 13.0                                              |
+| Web              | ✅      | Modern browsers (Chrome 80+, Firefox 75+, Safari 13+) |
+| Expo (managed)   | ✅      | SDK 50+                                               |
+| Expo (bare)      | ✅      | SDK 50+                                               |
+| React Native CLI | ✅      | RN 0.72+                                              |
+
+## Requirements
+
+| Dependency           | Min Version | Notes                                           |
+| -------------------- | ----------- | ----------------------------------------------- |
+| React                | 18.0.0      | Peer dependency                                 |
+| React Native         | 0.72.0      | Peer dependency                                 |
+| react-native-webview | 13.0.0      | Required for Android/iOS; optional for web-only |
+| react-native-web     | 0.19.0      | Required for web; optional for native-only      |
+| Node.js              | 22.11.0+    | Build/dev only                                  |
+
+> **iOS note:** Apple does not allow alternative browser engines on iOS. The map runs inside a native `WKWebView` via `react-native-webview`. There is no pure web/CSS fallback on iOS — behavior depends on the WebKit engine bundled with the OS version.
 
 ## Props
 
@@ -100,8 +116,16 @@ Usage examples for each platform are available in the [`example/`](example/) fol
 
 ## Credits
 
-- Based on [react-native-leaflet](https://github.com/pavel-corsaghin/react-native-leaflet)
-- Uses [Leaflet](https://leafletjs.com/) for map rendering
+This library is built on top of [react-native-leaflet](https://github.com/pavel-corsaghin/react-native-leaflet) by [@pavel-corsaghin](https://github.com/pavel-corsaghin), which itself is inspired by the original [react-native-leaflet](https://github.com/reggie3/react-native-leaflet) by [@reggie3](https://github.com/reggie3).
+
+Key differences from the base library:
+
+- Added **Web platform** support via `<iframe>` (React Native Web / Expo Web)
+- Full **TypeScript** support with updated type definitions
+- Compatible with **Expo managed workflow** (SDK 50+)
+- Uses platform-specific file resolution (`.native.tsx` / `.web.tsx`)
+
+Map rendering is powered by [Leaflet.js](https://leafletjs.com/).
 
 ## License
 
