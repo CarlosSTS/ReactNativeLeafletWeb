@@ -48,7 +48,7 @@ const LeafletView: React.FC<LeafletViewProps> = ({
   mapCenterPosition,
   ownPositionMarker,
   zoom = DEFAULT_ZOOM,
-  doDebug = __DEV__,
+  doDebug = location.hostname === "localhost",
   source = '/leaflet.html',
   zoomControl = true,
   attributionControl = true,
