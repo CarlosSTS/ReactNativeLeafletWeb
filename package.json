@@ -29,7 +29,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build",
+    "copy-leaflet-html-web": "sh scripts/copy-leaflet-html.sh"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
