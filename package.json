@@ -1,6 +1,6 @@
 {
-  "name": "ReactNativeLeafletWeb",
-  "version": "0.0.1",
+  "name": "react-native-leaflet-platform",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "copy-leaflet-html": "sh scripts/copy-leaflet-html.sh"
+    "copy-leaflet-html-web": "sh scripts/copy-leaflet-html.sh"
   },
   "dependencies": {
     "@react-native/new-app-screen": "0.84.1",
