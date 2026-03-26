@@ -23,3 +23,6 @@ ios/Pods
 # Test and coverage
 coverage
 __tests__
+
+# Examples
+example

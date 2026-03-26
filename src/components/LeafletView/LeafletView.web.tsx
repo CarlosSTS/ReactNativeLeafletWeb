@@ -8,9 +8,9 @@ import {
   MapShape,
   OwnPositionMarker,
   OWN_POSITION_MARKER_ID,
-} from '~/@types/leaflet';
+} from '../../@types/leaflet';
 
-import { LatLngExpression } from '~/@types/map';
+import { LatLngExpression } from '../../@types/map';
 
 const DEFAULT_MAP_LAYERS: MapLayer[] = [
   {
@@ -36,7 +36,7 @@ interface LeafletViewProps {
   zoomControl?: boolean;
   attributionControl?: boolean;
   useMarkerClustering?: boolean;
-  source?: string;
+  source?: string | { html: string; baseUrl?: string } | { uri: string; headers?: Record<string, string> };
   style?: React.CSSProperties;
 }
 
@@ -57,6 +57,12 @@ const LeafletView: React.FC<LeafletViewProps> = ({
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [initialized, setInitialized] = useState(false);
+
+  const iframeSrc = typeof source === 'string'
+    ? source
+    : source && 'uri' in source
+      ? source.uri
+      : undefined;
 
   const logMessage = useCallback(
     (message: string) => {
@@ -214,7 +220,7 @@ const LeafletView: React.FC<LeafletViewProps> = ({
   return (
     <iframe
       ref={iframeRef}
-      src={source}
+      src={iframeSrc}
       title="Leaflet Map"
       style={{
         border: 0,

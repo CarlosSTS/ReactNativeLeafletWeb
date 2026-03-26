@@ -9,12 +9,12 @@ import {
   MapShape,
   OwnPositionMarker,
   OWN_POSITION_MARKER_ID,
-} from '~/@types/leaflet';
+} from '../../@types/leaflet';
 
 import { Platform, StyleSheet } from 'react-native';
 import { WebViewMessageEvent } from 'react-native-webview/lib/WebViewTypes';
 import { LoadingIndicator } from '../LoadingIndicator';
-import { LatLngExpression } from '~/@types/map';
+import { LatLngExpression } from '../../@types/map';
 
 const LEAFLET_HTML_SOURCE = Platform.select({
   ios: require('../../../android/app/src/main/assets/leaflet.html'),

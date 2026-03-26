@@ -32,7 +32,19 @@ yarn add @carlossts/react-native-leaflet-platform
 
 ### Web HTML Asset Setup
 
-To use this library on **Web** (either with Expo Web or React Native Web), you must run the following script after installing dependencies:
+To use this library on **Web** (either with Expo Web or React Native Web), you must copy the `leaflet.html` file to your project's `public/` folder.
+
+Add this script to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "copy-leaflet-html-web": "sh node_modules/@carlossts/react-native-leaflet-platform/scripts/copy-leaflet-html.sh"
+  }
+}
+```
+
+Then run:
 
 ```sh
 npm run copy-leaflet-html-web
@@ -40,7 +52,7 @@ npm run copy-leaflet-html-web
 yarn copy-leaflet-html-web
 ```
 
-This will copy the required `leaflet.html` file to the correct location for your web build. This step is necessary to avoid file duplication and to keep the library bundle size small. Always run this script after installing or updating the library.
+This copies the required `leaflet.html` to your project's `public/` directory. Always run this after installing or updating the library.
 
 ### Additional dependencies
 
@@ -73,16 +85,18 @@ cp node_modules/@carlossts/react-native-leaflet-platform/android/app/src/main/as
 
 ## Usage with react-native-cli
 
-```js
+> Full example: [`example/react-native/App.tsx`](example/react-native/App.tsx)
+
+```tsx
 import React from 'react';
 import { LeafletView } from '@carlossts/react-native-leaflet-platform';
 
 const DEFAULT_LOCATION = {
   latitude: -23.5489,
-  longitude: -46.6388
-}
-const App: React.FC = () => {
+  longitude: -46.6388,
+};
 
+const App: React.FC = () => {
   return (
     <LeafletView
       mapCenterPosition={{
@@ -91,32 +105,36 @@ const App: React.FC = () => {
       }}
     />
   );
-}
+};
 
 export default App;
 ```
 
 ## Usage with Expo
 
-```js
+> Full example: [`example/expo/App.tsx`](example/expo/App.tsx)
+
+```tsx
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert } from 'react-native';
-import { Asset } from "expo-asset";
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { Asset } from 'expo-asset';
 import { File } from 'expo-file-system';
 import { LeafletView } from '@carlossts/react-native-leaflet-platform';
 
 const DEFAULT_LOCATION = {
   latitude: -23.5489,
-  longitude: -46.6388
-}
+  longitude: -46.6388,
+};
+
 const App: React.FC = () => {
   const [webViewContent, setWebViewContent] = useState<string | null>(null);
+
   useEffect(() => {
     let isMounted = true;
 
     const loadHtml = async () => {
       try {
-        const path = require("./assets/leaflet.html");
+        const path = require('./assets/leaflet.html');
         const asset = Asset.fromModule(path);
         await asset.downloadAsync();
         const htmlContent = await new File(asset.localUri!).text();
@@ -125,7 +143,6 @@ const App: React.FC = () => {
           setWebViewContent(htmlContent);
         }
       } catch (error) {
-        Alert.alert('Error loading HTML', JSON.stringify(error));
         console.error('Error loading HTML:', error);
       }
     };
@@ -138,8 +155,13 @@ const App: React.FC = () => {
   }, []);
 
   if (!webViewContent) {
-    return <ActivityIndicator size="large" />
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
+
   return (
     <LeafletView
       source={{ html: webViewContent }}
@@ -149,7 +171,102 @@ const App: React.FC = () => {
       }}
     />
   );
-}
+};
+
+const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+export default App;
+```
+
+## Usage with Expo + Web
+
+> Full example: [`example/expo-web/App.tsx`](example/expo-web/App.tsx)
+
+When targeting both native and web in Expo, use `Platform.OS` to differentiate. On web, the library uses an `<iframe>` that loads `leaflet.html` from your `public/` folder automatically. On native, you must load the HTML content via `expo-asset` and `expo-file-system`.
+
+```tsx
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Platform, StyleSheet, View } from 'react-native';
+import { LeafletView } from '@carlossts/react-native-leaflet-platform';
+
+const DEFAULT_LOCATION = {
+  latitude: -23.5489,
+  longitude: -46.6388,
+};
+
+const App: React.FC = () => {
+  const [webViewContent, setWebViewContent] = useState<string | null>(null);
+  const isWeb = Platform.OS === 'web';
+
+  useEffect(() => {
+    if (isWeb) return;
+
+    let isMounted = true;
+
+    const loadHtml = async () => {
+      try {
+        const { Asset } = await import('expo-asset');
+        const { File } = await import('expo-file-system');
+
+        const path = require('./assets/leaflet.html');
+        const asset = Asset.fromModule(path);
+        await asset.downloadAsync();
+        const htmlContent = await new File(asset.localUri!).text();
+
+        if (isMounted) {
+          setWebViewContent(htmlContent);
+        }
+      } catch (error) {
+        console.error('Error loading HTML:', error);
+      }
+    };
+
+    loadHtml();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isWeb]);
+
+  if (!isWeb && !webViewContent) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <LeafletView
+        {...(!isWeb && webViewContent
+          ? { source: { html: webViewContent } }
+          : {})}
+        mapCenterPosition={{
+          lat: DEFAULT_LOCATION.latitude,
+          lng: DEFAULT_LOCATION.longitude,
+        }}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default App;
 ```
