@@ -17,7 +17,7 @@ import { LoadingIndicator } from '../LoadingIndicator';
 import { LatLngExpression } from '~/@types/map';
 
 const LEAFLET_HTML_SOURCE = Platform.select({
-  ios: require('../../../android/src/main/assets/leaflet.html'),
+  ios: require('../../../android/app/src/main/assets/leaflet.html'),
   android: { uri: 'file:///android_asset/leaflet.html' },
 });
 
