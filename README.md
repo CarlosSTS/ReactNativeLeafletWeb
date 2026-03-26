@@ -68,14 +68,14 @@ npx expo install react-native-webview expo-asset expo-file-system
 You must also copy the required HTML file:
 
 ```sh
-cp node_modules/react-native-leaflet-platform/android/src/main/assets/leaflet.html assets
+cp node_modules/@carlossts/react-native-leaflet-platform/android/app/src/main/assets/leaflet.html assets
 ```
 
 ## Usage with react-native-cli
 
 ```js
 import React from 'react';
-import { LeafletView } from 'react-native-leaflet-view';
+import { LeafletView } from '@carlossts/react-native-leaflet-platform';
 
 const DEFAULT_LOCATION = {
   latitude: -23.5489,
@@ -103,7 +103,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert } from 'react-native';
 import { Asset } from "expo-asset";
 import { File } from 'expo-file-system';
-import { LatLng, LeafletView } from 'react-native-leaflet-view';
+import { LeafletView } from '@carlossts/react-native-leaflet-platform';
 
 const DEFAULT_LOCATION = {
   latitude: -23.5489,
