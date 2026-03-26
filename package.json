@@ -1,6 +1,9 @@
 {
   "name": "@carlossts/react-native-leaflet-platform",
   "version": "1.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "A React Native library for interactive maps using Leaflet, compatible with Android, iOS, Web, and Expo.",
   "main": "lib/index.js",
   "module": "lib/index.js",

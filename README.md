@@ -116,7 +116,7 @@ Usage examples for each platform are available in the [`example/`](example/) fol
 
 ## Credits
 
-This library is built on top of [react-native-leaflet](https://github.com/pavel-corsaghin/react-native-leaflet) by [@pavel-corsaghin](https://github.com/pavel-corsaghin), which itself is inspired by the original [react-native-leaflet](https://github.com/reggie3/react-native-leaflet) by [@reggie3](https://github.com/reggie3).
+This library is built on top of [react-native-leaflet](https://github.com/pavel-corsaghin/react-native-leaflet) by [@pavel-corsaghin](https://github.com/pavel-corsaghin), which itself is inspired by the original [react-native-leaflet](https://github.com/reggie3/react-native-webview-leaflet) by [@reggie3](https://github.com/reggie3).
 
 Key differences from the base library:
 
