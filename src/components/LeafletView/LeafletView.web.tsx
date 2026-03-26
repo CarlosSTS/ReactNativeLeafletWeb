@@ -122,6 +122,7 @@ const LeafletView: React.FC<LeafletViewProps> = ({
     useMarkerClustering,
   ]);
 
+  // Listen for messages from the iframe
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       const data = event.data;

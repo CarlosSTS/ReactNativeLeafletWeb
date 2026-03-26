@@ -5,9 +5,11 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "web": "webpack serve --mode development --open",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "copy-leaflet-html": "sh scripts/copy-leaflet-html.sh"
   },
   "dependencies": {
     "@react-native/new-app-screen": "0.84.1",

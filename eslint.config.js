@@ -14,6 +14,11 @@ export default [
       'metro.config.js',
       'expo-env.d.ts',
     ],
+    languageOptions: {
+      env: {
+        browser: true,
+      },
+    },
   },
 
   js.configs.recommended,
@@ -27,22 +32,6 @@ export default [
           jsx: true,
         },
         sourceType: 'module',
-      },
-      globals: {
-        process: 'readonly',
-        console: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-        __DEV__: 'readonly',
-        FormData: 'readonly',
-        Blob: 'readonly',
-        require: 'readonly',
-        HTMLIFrameElement: 'readonly',
-        document: 'readonly',
-        window: 'readonly',
-        MessageEvent: 'readonly',
       },
     },
     plugins: {
