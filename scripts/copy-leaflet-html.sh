@@ -3,7 +3,7 @@
 # consumer project's public/ directory (required for web/iframe rendering).
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-LEAFLET_HTML="$SCRIPT_DIR/../android/app/src/main/assets/leaflet.html"
+LEAFLET_HTML="$SCRIPT_DIR/../android/src/main/assets/leaflet.html"
 DEST="$(pwd)/public"
 
 if [ ! -f "$LEAFLET_HTML" ]; then

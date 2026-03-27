@@ -1,15 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  MapMarker,
   WebviewLeafletMessage,
   MapMessage,
   WebViewLeafletEvents,
   MapLayer,
-  MapShape,
-  OwnPositionMarker,
   OWN_POSITION_MARKER_ID,
 } from '../../@types/leaflet';
-import { LatLng } from '../../@types/map';
+import { LeafletViewProps } from '../../@types/map';
 
 const DEFAULT_MAP_LAYERS: MapLayer[] = [
   {
@@ -23,23 +20,14 @@ const DEFAULT_MAP_LAYERS: MapLayer[] = [
 
 const DEFAULT_ZOOM = 15;
 
-interface LeafletViewProps {
-  onMessageReceived?: (message: WebviewLeafletMessage) => void;
-  mapLayers?: MapLayer[];
-  mapMarkers?: MapMarker[];
-  mapShapes?: MapShape[];
-  mapCenterPosition?: LatLng;
-  ownPositionMarker?: OwnPositionMarker;
-  zoom?: number;
-  doDebug?: boolean;
-  zoomControl?: boolean;
-  attributionControl?: boolean;
-  useMarkerClustering?: boolean;
+interface WebLeafletViewProps extends LeafletViewProps {
+  /** Loads static HTML or a URI in the WebView/iframe. Defaults to `'/leaflet.html'`. */
   source?: string | { html: string; baseUrl?: string } | { uri: string; headers?: Record<string, string> };
+  /** Custom CSS styles applied to the iframe container. */
   style?: React.CSSProperties;
 }
 
-const LeafletView: React.FC<LeafletViewProps> = ({
+const LeafletView: React.FC<WebLeafletViewProps> = ({
   onMessageReceived,
   mapLayers = DEFAULT_MAP_LAYERS,
   mapMarkers = [],
