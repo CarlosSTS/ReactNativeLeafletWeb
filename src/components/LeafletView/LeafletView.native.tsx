@@ -1,23 +1,20 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { WebView, WebViewProps } from 'react-native-webview';
 import {
-  MapMarker,
   WebviewLeafletMessage,
   MapMessage,
   WebViewLeafletEvents,
   MapLayer,
-  MapShape,
-  OwnPositionMarker,
   OWN_POSITION_MARKER_ID,
 } from '../../@types/leaflet';
 
 import { Platform, StyleSheet } from 'react-native';
 import { WebViewMessageEvent } from 'react-native-webview/lib/WebViewTypes';
 import { LoadingIndicator } from '../LoadingIndicator';
-import { LatLng } from '../../@types/map';
+import { LeafletViewProps } from '../../@types/map';
 
 const LEAFLET_HTML_SOURCE = Platform.select({
-  ios: require('../../../android/app/src/main/assets/leaflet.html'),
+  ios: require('../../../android/src/main/assets/leaflet.html'),
   android: { uri: 'file:///android_asset/leaflet.html' },
 });
 
@@ -33,21 +30,11 @@ const DEFAULT_MAP_LAYERS: MapLayer[] = [
 
 const DEFAULT_ZOOM = 15;
 
-interface LeafletViewProps extends Omit<WebViewProps, 'onMessage'> {
-  onMessageReceived?: (message: WebviewLeafletMessage) => void;
-  mapLayers?: MapLayer[];
-  mapMarkers?: MapMarker[];
-  mapShapes?: MapShape[];
-  mapCenterPosition?: LatLng;
-  ownPositionMarker?: OwnPositionMarker;
-  zoom?: number;
-  doDebug?: boolean;
-  zoomControl?: boolean;
-  attributionControl?: boolean;
-  useMarkerClustering?: boolean;
-}
+interface NativeLeafletViewProps
+  extends LeafletViewProps,
+    Omit<WebViewProps, 'onMessage'> {}
 
-const LeafletView: React.FC<LeafletViewProps> = ({
+const LeafletView: React.FC<NativeLeafletViewProps> = ({
   renderLoading = () => <LoadingIndicator />,
   onMessageReceived,
   mapLayers = DEFAULT_MAP_LAYERS,

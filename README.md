@@ -42,7 +42,7 @@ yarn add @carlossts/react-native-leaflet-platform
   Copy the HTML asset:
 
   ```sh
-  cp node_modules/@carlossts/react-native-leaflet-platform/android/app/src/main/assets/leaflet.html assets
+  cp node_modules/@carlossts/react-native-leaflet-platform/android/src/main/assets/leaflet.html assets
   ```
 
 - **Web (Expo Web or React Native Web):**
@@ -73,6 +73,28 @@ Usage examples for each platform are available in the [`example/`](example/) fol
 | React Native CLI   | [`example/react-native/App.tsx`](example/react-native/App.tsx) |
 | Expo (Android/iOS) | [`example/expo/App.tsx`](example/expo/App.tsx)                 |
 | Expo + Web         | [`example/expo-web/App.tsx`](example/expo-web/App.tsx)         |
+
+### Running the React Native CLI example
+
+```sh
+# 1. Install root dependencies
+yarn install
+
+# 2. Navigate to the example project
+cd example/reactNativeLeafletPlatformExample
+
+# 3. Install example dependencies
+yarn install
+
+# 4. Run on Android
+yarn android
+
+# 5. Or run on iOS (macOS only)
+cd ios && pod install && cd ..
+yarn ios
+```
+
+> The example project imports the library directly from the source (`../../src`) via Metro and Babel aliases, so any changes to the library code are reflected immediately.
 
 ## Supported Platforms
 

@@ -21,3 +21,37 @@ export interface DivIcon {
   /** CSS class name applied to the marker `<div>`. Defaults to `'leaflet-div-icon'`. */
   className?: string;
 }
+
+import type {
+  MapLayer,
+  MapMarker,
+  MapShape,
+  OwnPositionMarker,
+  WebviewLeafletMessage,
+} from './leaflet';
+
+/** Common props shared by the LeafletView component across all platforms. */
+export interface LeafletViewProps {
+  /** Callback that receives messages from the map as `WebviewLeafletMessage` objects. */
+  onMessageReceived?: (message: WebviewLeafletMessage) => void;
+  /** An array of tile layers to display on the map. Defaults to OpenStreetMap. */
+  mapLayers?: MapLayer[];
+  /** An array of markers to display on the map. */
+  mapMarkers?: MapMarker[];
+  /** An array of shapes (polygons, polylines, circles, rectangles) to display on the map. */
+  mapShapes?: MapShape[];
+  /** The center position of the map as `{ lat, lng }`. */
+  mapCenterPosition?: LatLng;
+  /** A special marker representing the user's own position. Uses `OWN_POSITION_MARKER_ID` as its ID. */
+  ownPositionMarker?: OwnPositionMarker;
+  /** The zoom level of the map (1–19). Defaults to `15`. */
+  zoom?: number;
+  /** Enables debug message logging. */
+  doDebug?: boolean;
+  /** Controls visibility of the zoom controls on the map. */
+  zoomControl?: boolean;
+  /** Controls visibility of the attribution control on the map. */
+  attributionControl?: boolean;
+  /** Enables or disables marker clustering. Defaults to `true`. */
+  useMarkerClustering?: boolean;
+}

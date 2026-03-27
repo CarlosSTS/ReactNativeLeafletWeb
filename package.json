@@ -13,7 +13,9 @@
   "files": [
     "lib/",
     "src/",
-    "android/app/src/main/assets/leaflet.html",
+    "android/",
+    "ios/",
+    "react-native-leaflet-platform.podspec",
     "scripts/"
   ],
   "keywords": [
