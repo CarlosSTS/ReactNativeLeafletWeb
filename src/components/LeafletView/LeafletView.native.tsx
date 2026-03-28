@@ -217,6 +217,7 @@ const LeafletView: React.FC<NativeLeafletViewProps> = ({
       allowFileAccess={true}
       allowUniversalAccessFromFileURLs={true}
       allowFileAccessFromFileURLs={true}
+      applicationNameForUserAgent={'Mozilla/5.0'}
     />
   );
 };
