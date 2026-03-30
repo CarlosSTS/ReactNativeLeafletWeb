@@ -48,6 +48,7 @@ const LeafletView: React.FC<NativeLeafletViewProps> = ({
   zoomControl = true,
   attributionControl = true,
   useMarkerClustering = true,
+  userAgent = 'reactNativeLeafletPlatformExample',
   ...rest
 }) => {
   const webViewRef = useRef<WebView>(null);
@@ -217,7 +218,7 @@ const LeafletView: React.FC<NativeLeafletViewProps> = ({
       allowFileAccess={true}
       allowUniversalAccessFromFileURLs={true}
       allowFileAccessFromFileURLs={true}
-      applicationNameForUserAgent={'Mozilla/5.0'}
+      userAgent={userAgent}
     />
   );
 };
