@@ -54,4 +54,10 @@ export interface LeafletViewProps {
   attributionControl?: boolean;
   /** Enables or disables marker clustering. Defaults to `true`. */
   useMarkerClustering?: boolean;
+  /** Custom CSS style string applied to the zoom control container. */
+  zoomControlStyle?: string;
+  /** Custom CSS style string applied to the zoom-in button. */
+  zoomInStyle?: string;
+  /** Custom CSS style string applied to the zoom-out button. */
+  zoomOutStyle?: string;
 }

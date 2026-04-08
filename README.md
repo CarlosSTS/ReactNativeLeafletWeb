@@ -196,6 +196,9 @@ This workaround is validated with `react-native-webview@13.16.1`.
 | zoomControl         | optional | `boolean`                    | Controls visibility of the zoom controls on the map               |
 | attributionControl  | optional | `boolean`                    | Controls visibility of the attribution control on the map         |
 | useMarkerClustering | optional | `boolean`                    | Enables or disables marker clustering. Default: `true`            |
+| zoomControlStyle    | optional | `string`                     | Custom CSS style string applied to the zoom control container     |
+| zoomInStyle         | optional | `string`                     | Custom CSS style string applied to the zoom-in button             |
+| zoomOutStyle        | optional | `string`                     | Custom CSS style string applied to the zoom-out button            |
 
 ## Credits
 

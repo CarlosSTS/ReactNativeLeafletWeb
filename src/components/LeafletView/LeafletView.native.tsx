@@ -48,6 +48,9 @@ const LeafletView: React.FC<NativeLeafletViewProps> = ({
   zoomControl = true,
   attributionControl = true,
   useMarkerClustering = true,
+  zoomControlStyle,
+  zoomInStyle,
+  zoomOutStyle,
   userAgent = 'reactNativeLeafletPlatformExample',
   ...rest
 }) => {
@@ -99,6 +102,9 @@ const LeafletView: React.FC<NativeLeafletViewProps> = ({
     startupMessage.useMarkerClustering = useMarkerClustering;
     startupMessage.zoomControl = zoomControl;
     startupMessage.attributionControl = attributionControl;
+    startupMessage.zoomControlStyle = zoomControlStyle;
+    startupMessage.zoomInStyle = zoomInStyle;
+    startupMessage.zoomOutStyle = zoomOutStyle;
 
     sendMessage(startupMessage);
     setInitialized(true);
@@ -159,6 +165,9 @@ const LeafletView: React.FC<NativeLeafletViewProps> = ({
       useMarkerClustering,
       zoomControl,
       attributionControl,
+      zoomControlStyle,
+      zoomInStyle,
+      zoomOutStyle,
     });
   }, [
     initialized,
@@ -167,6 +176,9 @@ const LeafletView: React.FC<NativeLeafletViewProps> = ({
     useMarkerClustering,
     zoomControl,
     attributionControl,
+    zoomControlStyle,
+    zoomInStyle,
+    zoomOutStyle,
   ]);
 
   //Handle mapShapes update
