@@ -243,6 +243,12 @@ export interface MapMessage {
     zoomControl?: boolean;
     /** Controls visibility of the attribution control on the map. */
     attributionControl?: boolean;
+    /** Inline CSS styles applied to the zoom control container. */
+    zoomControlStyle?: string;
+    /** Inline CSS styles applied to the zoom-in button. */
+    zoomInStyle?: string;
+    /** Inline CSS styles applied to the zoom-out button. */
+    zoomOutStyle?: string;
 }
 /** Data payload included in messages received from the Leaflet WebView. */
 export interface WebviewLeafletMessagePayload {

@@ -40,6 +40,9 @@ const LeafletView: React.FC<WebLeafletViewProps> = ({
   zoomControl = true,
   attributionControl = true,
   useMarkerClustering = true,
+  zoomControlStyle,
+  zoomInStyle,
+  zoomOutStyle,
   style,
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -97,6 +100,9 @@ const LeafletView: React.FC<WebLeafletViewProps> = ({
     startupMessage.useMarkerClustering = useMarkerClustering;
     startupMessage.zoomControl = zoomControl;
     startupMessage.attributionControl = attributionControl;
+    startupMessage.zoomControlStyle = zoomControlStyle;
+    startupMessage.zoomInStyle = zoomInStyle;
+    startupMessage.zoomOutStyle = zoomOutStyle;
 
     sendMessage(startupMessage);
     setInitialized(true);
@@ -160,6 +166,9 @@ const LeafletView: React.FC<WebLeafletViewProps> = ({
       useMarkerClustering,
       zoomControl,
       attributionControl,
+      zoomControlStyle,
+      zoomInStyle,
+      zoomOutStyle,
     });
   }, [
     initialized,
@@ -168,6 +177,9 @@ const LeafletView: React.FC<WebLeafletViewProps> = ({
     useMarkerClustering,
     zoomControl,
     attributionControl,
+    zoomControlStyle,
+    zoomInStyle,
+    zoomOutStyle,
   ]);
 
   //Handle mapShapes update
