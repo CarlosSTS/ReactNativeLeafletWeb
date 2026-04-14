@@ -117,7 +117,7 @@ export interface BaseMarker {
     position: LatLng;
     /** A lightweight `<div>`-based icon instead of an image. Useful for fully custom markers. */
     divIcon?: DivIcon;
-    /** URL or emoji string used as the marker icon. */
+    /** URL, emoji, or base64 string used as the marker icon. */
     icon: string;
     /** The pixel offset `[x, y]` of the icon anchor relative to its top-left corner. */
     iconAnchor?: [number, number];
@@ -143,7 +143,7 @@ export interface BaseMarker {
     closeButtonContainerStyle?: string;
     /** Enables the 'X' close button inside the tooltip. @default true */
     closeButton?: boolean;
-    /** Closes the tooltip when the user clicks anywhere on the map. @default true */
+    /** Closes the tooltip when the user clicks anywhere on the map. @default true (or `false` when `autoClose` is explicitly `false`) */
     closeOnClick?: boolean;
     /** Automatically closes this tooltip when another marker's tooltip is opened. @default true */
     autoClose?: boolean;
